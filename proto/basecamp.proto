@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package basecamp;
+
+// A single record 
+message Record {
+    int32 record_id = 1;
+    string borough = 2;         
+    int32 injury_count = 3;    
+    string other_fields = 4;
+}
+
+
+message QueryRequest {
+    string query_id = 1;   // unique ID for dedup caching
+    int32 min_injury = 2;
+    int32 max_injury = 3;
+    string sender_id = 4;  // to avoid sending back immediately
+}
+
+//  list of records in response
+message QueryResponse {
+    repeated Record records = 1;
+}
+
+service QueryService {
+  
+    rpc QueryByInjuryRange(QueryRequest) returns (QueryResponse);
+}
